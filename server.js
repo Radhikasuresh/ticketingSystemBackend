@@ -5,6 +5,7 @@ import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 
 // routes
 import userRoute from "./routes/userRoute.js";
+import ticketRoute from "./routes/ticketRoute.js";
 
 dotenv.config();
 connectDB();
@@ -12,6 +13,7 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use("/api/users", userRoute);
+app.use("/api/tickets", ticketRoute);
 
 app.use(notFound);
 app.use(errorHandler);
