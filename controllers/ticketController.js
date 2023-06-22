@@ -27,4 +27,49 @@ const createTicket = asyncHandler(async (req, res) => {
   res.status(201).json(createdTicket);
 });
 
-export { createTicket };
+// @desc    Get all Tickets
+// @route   POST /api/tickets/getAllTickets
+// @access  Admin
+const getAllTickets = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Current page number, defaults to 1
+  const perPage = 1; // Number of items per page
+  const skip = (page - 1) * perPage; // Number of items to skip
+
+  const tickets = await Ticket.find().skip(skip).limit(perPage).exec();
+
+  // Count total number of tickets
+  const totalTickets = await Ticket.countDocuments().exec();
+
+  res.json({
+    tickets,
+    currentPage: page,
+    totalPages: Math.ceil(totalTickets / perPage),
+  });
+});
+
+// @desc    Get all Tickets
+// @route   POST /api/tickets/getUserTickets
+// @access  Private
+const getUserTickets = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1; // Current page number, defaults to 1
+  const perPage = 1; // Number of items per page
+  const skip = (page - 1) * perPage; // Number of items to skip
+
+  const tickets = await Ticket.find({ user: req.user._id })
+    .skip(skip)
+    .limit(perPage)
+    .exec();
+
+  // Count total number of tickets
+  const totalTickets = await Ticket.find({ user: req.user._id })
+    .countDocuments()
+    .exec();
+
+  res.json({
+    tickets,
+    currentPage: page,
+    totalPages: Math.ceil(totalTickets / perPage),
+  });
+});
+
+export { createTicket, getAllTickets, getUserTickets };
