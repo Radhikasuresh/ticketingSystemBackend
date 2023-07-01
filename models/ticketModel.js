@@ -37,6 +37,17 @@ const ticketSchema = mongoose.Schema(
       type: String,
       default: "Open",
     },
+    messages: [
+      {
+        sender: {
+          type: String,
+        },
+        content: {
+          type: String,
+        },
+        timestamp: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     timestamps: true,
