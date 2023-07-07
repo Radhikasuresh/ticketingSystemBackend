@@ -104,10 +104,56 @@ const updateTicketMessage = asyncHandler(async (req, res) => {
   res.status(201).json(updatedTicket);
 });
 
+// @desc    updateTicketStatus
+// @route   PUT /api/tickets/:id/status
+// @access  Private
+const updateTicketStatus = asyncHandler(async (req, res) => {
+  const ticketId = req.params.id;
+  const { status } = req.body;
+
+  // Update the ticket document with the new message
+  const ticket = await Ticket.updateOne(
+    { _id: ticketId },
+    { $set: { status } }
+  );
+
+  if (!ticket) {
+    return res.status(404).json({ error: "Ticket not found" });
+  }
+
+  const updatedTicket = await Ticket.find({ _id: ticketId });
+
+  res.status(201).json(updatedTicket);
+});
+
+// @desc    updateTicketAssign
+// @route   PUT /api/tickets/:id/assign
+// @access  Private
+const updateTicketAssign = asyncHandler(async (req, res) => {
+  const ticketId = req.params.id;
+  const { assign } = req.body;
+
+  // Update the ticket document with the new message
+  const ticket = await Ticket.updateOne(
+    { _id: ticketId },
+    { $set: { assign } }
+  );
+
+  if (!ticket) {
+    return res.status(404).json({ error: "Ticket not found" });
+  }
+
+  const updatedTicket = await Ticket.find({ _id: ticketId });
+
+  res.status(201).json(updatedTicket);
+});
+
 export {
   createTicket,
   getAllTickets,
   getUserTickets,
   getTicket,
   updateTicketMessage,
+  updateTicketStatus,
+  updateTicketAssign,
 };

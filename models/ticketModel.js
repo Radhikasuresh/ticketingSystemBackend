@@ -48,6 +48,9 @@ const ticketSchema = mongoose.Schema(
         timestamp: { type: Date, default: Date.now },
       },
     ],
+    assign: {
+      type: String,
+    },
   },
   {
     timestamps: true,
